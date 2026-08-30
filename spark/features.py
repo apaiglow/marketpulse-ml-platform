@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 from clean import df_review_clean, df_meta_clean
-from pyspark.sql.functions import col, length, max, dayofmonth, month, year, count, avg, stddev, sum, when, countDistinct, min, max
+from pyspark.sql.functions import col, length, dayofmonth, month, year, count, avg, stddev, sum, when, countDistinct, min, max
 from pyspark.sql.functions import datediff, weekofyear
 
 spark = SparkSession.builder.appName('MarketPulse Features').master('local[*]').getOrCreate()
@@ -22,8 +22,8 @@ df_features.select('review_timestamp', 'review_year', 'review_month', 'review_da
 product_features = df_features.groupBy('parent_asin').agg(count('*').alias('review_count'),
                                                           avg('rating').alias('average_rating'),
                                                           stddev('rating').alias('rating_std'),
-                                                          sum(when(col('rating') >= 3.5, 1).otherwise(0)) / count('*').alias('positive_ratio'),
-                                                          (1 - (sum(when(col('rating') >= 3.5, 1).otherwise(0)) / count('*')).alias('negative_ratio')),
+                                                          (sum(when(col('rating') >= 3.5, 1).otherwise(0)) / count('*')).alias('positive_ratio'),
+                                                          (1 - (sum(when(col('rating') >= 3.5, 1).otherwise(0)) / count('*'))).alias('negative_ratio'),
                                                           avg('helpful_vote').alias('average_helpful_votes'),
                                                           countDistinct('user_id').alias('unique_user_count'),
                                                           min('review_timestamp').alias('first_review'),
