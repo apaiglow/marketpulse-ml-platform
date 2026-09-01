@@ -11,3 +11,6 @@ models/
 .mypy_cache/
 .DS_Store
 Thumbs.db
+mlruns/
+artifacts/
+mlflow.db
