@@ -2,8 +2,7 @@
 __pycache__/
 *.py[cod]
 .env
-data/raw/
-data/processed/
+data/
 models/
 *.pyc
 .ipynb_checkpoints/
