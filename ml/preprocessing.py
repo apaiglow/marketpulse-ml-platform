@@ -9,4 +9,4 @@ def prepare_sentiment_data(df):
     return df.select('text', 'sentiment')
 
 def normalize_text(text):
-    return text.str.lower()
+    return pd.Series(text).str.lower()
