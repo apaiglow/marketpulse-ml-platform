@@ -1,0 +1,41 @@
+services:
+
+  db:
+    image: postgres:16
+    container_name: marketpulse-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${MARKETPULSE_DB_PASSWORD}
+      POSTGRES_DB: marketpulse
+    volumes:
+      - marketpulse-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: marketpulse-api
+    environment:
+      MARKETPULSE_DB_PASSWORD: ${MARKETPULSE_DB_PASSWORD}
+      MARKETPULSE_DB_HOST: db
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: dashboard/Dockerfile
+    container_name: marketpulse-dashboard
+    environment:
+      API_BASE_URL: http://api:8000
+    depends_on:
+      - api
+    ports:
+      - "8501:8501"
+
+volumes:
+  marketpulse-postgres-data:

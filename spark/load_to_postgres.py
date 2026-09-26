@@ -18,6 +18,7 @@ jdbc_properties = {
 reviews = spark.read.parquet('data/processed/reviews_processed.parquet')
 products = spark.read.parquet('data/processed/products.parquet')
 product_metrics = spark.read.parquet('data/processed/product_features.parquet')
+anomalies = spark.read.parquet('data/processed/product_anomalies.parquet')
 users = spark.read.parquet('data/processed/user_features.parquet')
 
 users = users.select('user_id')
@@ -49,6 +50,10 @@ product_metrics = product_metrics.select(
     'average_helpful_votes',
     'review_velocity',
     'unique_user_count'
+)
+anomalies = anomalies.select(
+    'parent_asin',
+    'anomaly'
 )
 
 users.write.jdbc(

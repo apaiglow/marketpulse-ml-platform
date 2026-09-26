@@ -1,7 +1,8 @@
 import requests
 import streamlit as st
+import os
 
-API_BASE_URL = 'http://localhost:8000'
+API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
 
 def handle_response(response):
     if response.status_code == 404:
